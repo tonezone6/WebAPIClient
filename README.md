@@ -36,14 +36,21 @@ extension AppEnvironment {
 ```
                       
 ### Defining resources
-                      
+
 ```swift
 typealias Resource = WebAPIClient.Resource
+                                                                                                                                      
 extension Resource where Value == [Users] {
-  static let users = Self(path: "users", type: [News].self)
+  static let users = Self(
+    path: "users",
+    type: [News].self
+  )
 }
 extension Resource where Value == [Message] {
-  static let messages = Self(path: "messages", type: [Message].self)
+  static let messages = Self(
+    path: "messages",
+    type: [Message].self
+  )
 }
 ```
 
@@ -96,6 +103,8 @@ do {
         
 ### SwiftUI environment
                                                                            
+The client can be passed into the environment to be used with SwiftUI
+                                                                                                                                                                                       
 ```swift
 struct WebAPIClientKey: EnvironmentKey {
   static var defaultValue = WebAPIClient(environment: .development)
@@ -109,6 +118,20 @@ extension EnvironmentValues {
 }
 ```
 
+```swift
+@main
+struct NetworkingAppApp: App {
+  let client = WebAPIClient(environment: .development)
+  
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
+        .environment(\.apiClient, client)
+    }
+  }
+}
+```
+                                                                           
 ```swift
 struct UsersList: View {
   @Environment(\.apiClient) var client
