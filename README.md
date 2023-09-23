@@ -27,9 +27,9 @@ extension AppEnvironment {
     name: "Production",
     baseURL: URL(string: "https://theapp")!,
     session: {
-      let configuration = URLSessionConfiguration.default
-      configuration.httpAdditionalHeaders = ["ApiKey": "production-key"]
-      return URLSession(configuration: configuration)
+      let config = URLSessionConfiguration.default
+      config.httpAdditionalHeaders = ["ApiKey": "production-key"]
+      return URLSession(configuration: config)
     }()
   )
 }
