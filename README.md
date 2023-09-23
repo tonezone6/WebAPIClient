@@ -1,6 +1,6 @@
 # WebAPIClient
 
-A scalable client for fetching web resources, built using modern Swift concurrency. Supports features like retry attempts & duration and also fetching nested resources by a given key path.
+A Swift package for fetching web resources, built using modern Swift concurrency. Supports features like retry attempts & duration and also fetching nested resources by a given key path.
 
 ### Defining app environments
 
