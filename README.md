@@ -5,7 +5,10 @@ A Swift package for fetching web resources, built using modern Swift concurrency
 ### Defining app environments
 
 ```swift
+import WebAPIClient
+
 typealias AppEnvironment = WebAPIClient.Environment
+
 extension AppEnvironment {
   #if DEBUG
   static let development = Self(
@@ -89,4 +92,32 @@ do {
 } catch {
   // error handling
 }
+```
+        
+### SwiftUI environment
+                                                                           
+```swift
+struct WebAPIClientKey: EnvironmentKey {
+  static var defaultValue = WebAPIClient(environment: .development)
+}
+
+extension EnvironmentValues {
+  var apiClient: WebAPIClient {
+    get { self[WebAPIClientKey.self] }
+    set { self[WebAPIClientKey.self] = newValue }
+  }
+}
+```
+
+```swift
+struct UsersList: View {
+  @Environment(\.apiClient) var client
+  @State private var users: [User] = []
+  
+  var body: some View {
+    // ...
+  }
+  .task {
+    users = try? await client.fetch(.users)
+  }
 ```
