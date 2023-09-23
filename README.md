@@ -70,11 +70,11 @@ extension Resource where Value == String {
     type: String.self
   )
 }
+```
 
-// ...
-
+```swift
 do {
-  let cityString = try await apiClient.fetch(.city)
+  let string = try await client.fetch(.city)
   // ...
 } catch {
   // Error handling
