@@ -47,7 +47,7 @@ do {
   let messages = try await client.fetch(.messages)
   // ...
 } catch {
-  // Error handling
+  // error handling
 }
 ```
 
@@ -55,16 +55,20 @@ do {
 
 ```swift
 do {
-  let user = try await client.fetch(.user, attempts: 3, delay: .seconds(1))
+  let user = try await client.fetch(
+    .user,
+    attempts: 3,
+    delay: .seconds(1)
+  )
   // ...
 } catch {
-  // Error handling
+  // error handling
 }
 ```
               
 ```swift
 extension Resource where Value == String {
-  static let city = Self(
+  static let nestedCity = Self(
     path: "some/big/response",
     keyPath: "response.user.address.city",
     type: String.self
@@ -74,9 +78,9 @@ extension Resource where Value == String {
 
 ```swift
 do {
-  let string = try await client.fetch(.city)
+  let cityName = try await client.fetch(.nestedCity)
   // ...
 } catch {
-  // Error handling
+  // error handling
 }
 ```
