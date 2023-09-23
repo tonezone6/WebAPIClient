@@ -5,25 +5,31 @@ A Swift package for fetching web resources, built using modern Swift concurrency
 ### Defining app environments
 
 ```swift
-#if DEBUG
-static let development = Self(
-  name: "Development",
-  baseURL: URL(string: "https://api.dev")!,
-  session: {
-    let config = URLSessionConfiguration.ephemeral
-    config.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-    config.httpAdditionalHeaders = ["APIKey" : "test-key"]
-    return URLSession(configuration: config)
-  }()
-)
-#endif
+typealias AppEnvironment = WebAPIClient.Environment
+extension AppEnvironment {
+  #if DEBUG
+  static let development = Self(
+    name: "Development",
+    baseURL: URL(string: "https://api.dev")!,
+    session: {
+      let config = URLSessionConfiguration.ephemeral
+      config.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+      config.httpAdditionalHeaders = ["ApiKey" : "some-test-key"]
+      return URLSession(configuration: config)
+    }()
+  )
+  #endif
+  
+  static let production = Self(
+    // ...
+  )
+}
 ```
                       
 ### Defining resources
                       
 ```swift
 typealias Resource = WebAPIClient.Resource
-                      
 extension Resource where Value == [Users] {
   static let users = Self(path: "users", type: [News].self)
 }
@@ -36,9 +42,9 @@ extension Resource where Value == [Message] {
 
 ```swift
 do {
-  let apiClient = WebAPIClient(environment: .development)
-  let users = try await apiClient.fetch(.users)
-  let messages = try await apiClient.fetch(.messages)
+  let client = WebAPIClient(environment: .development)
+  let users = try await client.fetch(.users)
+  let messages = try await client.fetch(.messages)
   // ...
 } catch {
   // Error handling
@@ -49,13 +55,13 @@ do {
 
 ```swift
 do {
-  let user = try await apiClient.fetch(.user, attempts: 3, delay: .seconds(1))
+  let user = try await client.fetch(.user, attempts: 3, delay: .seconds(1))
   // ...
 } catch {
   // Error handling
 }
 ```
-
+              
 ```swift
 extension Resource where Value == String {
   static let city = Self(
@@ -65,8 +71,10 @@ extension Resource where Value == String {
   )
 }
 
+// ...
+
 do {
-  let city = try await apiClient.fetch(.city)
+  let cityString = try await apiClient.fetch(.city)
   // ...
 } catch {
   // Error handling
