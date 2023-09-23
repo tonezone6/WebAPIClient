@@ -10,18 +10,24 @@ extension AppEnvironment {
   #if DEBUG
   static let development = Self(
     name: "Development",
-    baseURL: URL(string: "https://api.dev")!,
+    baseURL: URL(string: "https://theapp.dev")!,
     session: {
       let config = URLSessionConfiguration.ephemeral
       config.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-      config.httpAdditionalHeaders = ["ApiKey" : "some-test-key"]
+      config.httpAdditionalHeaders = ["ApiKey" : "test-key"]
       return URLSession(configuration: config)
     }()
   )
   #endif
   
   static let production = Self(
-    // ...
+    name: "Production",
+    baseURL: URL(string: "https://theapp")!,
+    session: {
+      let configuration = URLSessionConfiguration.default
+      configuration.httpAdditionalHeaders = ["ApiKey": "production-key"]
+      return URLSession(configuration: configuration)
+    }()
   )
 }
 ```
