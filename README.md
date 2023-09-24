@@ -40,10 +40,10 @@ extension AppEnvironment {
 ```swift
 typealias Resource = WebAPIClient.Resource
                                                                                                                                       
-extension Resource where Value == [Users] {
+extension Resource where Value == [User] {
   static let users = Self(
     path: "users",
-    type: [News].self
+    type: [User].self
   )
 }
 extension Resource where Value == [Message] {
@@ -67,7 +67,7 @@ do {
 }
 ```
 
-### Other features: retry, fetching nested resources
+### Other features: retry, nested resources
 
 ```swift
 do {
@@ -84,7 +84,7 @@ do {
               
 ```swift
 extension Resource where Value == String {
-  static let nestedCity = Self(
+  static let nestedString = Self(
     path: "some/big/response",
     keyPath: "response.user.address.city",
     type: String.self
@@ -94,7 +94,7 @@ extension Resource where Value == String {
 
 ```swift
 do {
-  let cityName = try await client.fetch(.nestedCity)
+  let city = try await client.fetch(.nestedString)
   // ...
 } catch {
   // error handling
