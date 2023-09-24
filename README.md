@@ -103,7 +103,7 @@ do {
         
 ### SwiftUI environment
                                                                            
-The client can be passed into the environment to be used with SwiftUI
+The client can be passed into the environment like this
                                                                                                                                                                                        
 ```swift
 struct WebAPIClientKey: EnvironmentKey {
