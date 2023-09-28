@@ -144,3 +144,19 @@ struct UsersList: View {
     users = try? await client.fetch(.users)
   }
 ```
+
+### Multipart data
+
+```swift
+var multipart = MultipartData()
+multipart.add(key: "model_type", value: "A")
+multipart.add(key: "voice_type", value: "Jane")
+multipart.add(key: "source_audio_file", fileName: "recording.wav", fileData: audioData, mimeType: "audio/wav")
+
+var request = URLRequest(url: uploadURL)
+request.httpBody = multipart.data
+request.allHTTPHeaderFields = [
+  "Authorization" : "app-token",
+  "Content-Type" : multipart.contentType
+]
+```
